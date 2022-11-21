@@ -35,48 +35,48 @@ def create_app() -> Flask:
     from .models import User, Hawkins
     #create_database(app)
 
-    with app.app_context():
+    #with app.app_context():
         # test the database here
-        from .models import Team, User
+        #from .models import Team, User
 
         # get all the users associated with the swim team
         
-        mens_swim = Team.query.filter_by(name="mens_swim").first()
-        if mens_swim != None:
-            print(
-                [user.first_name for user in mens_swim.users]
-            )
+        #mens_swim = Team.query.filter_by(name="mens_swim").first()
+        #if mens_swim != None:
+        #    print(
+        #        [user.first_name for user in mens_swim.users]
+        #    )
 
         # get all the athletes associated with the swim team
         
-            print(
-                [user.first_name for user in mens_swim.users if user.role == "athlete"]
-            )
+        #    print(
+        #        [user.first_name for user in mens_swim.users if user.role == "athlete"]
+        #    )
 
         # get all the coaches
-            print(
-                [user.first_name for user in mens_swim.users if user.role == "coach"]
-            )
-        else:
-            print("no user team nated 'mens_swim' found")
+        #    print(
+        #        [user.first_name for user in mens_swim.users if user.role == "coach"]
+        #    )
+        #else:
+        #    print("no user team nated 'mens_swim' found")
 
         # get all the teams that Milo is on
-        milo = User.query.filter_by(first_name="Milo").first()
-        if milo != None:
-            print(
-                [team.name for team in milo.teams]
-            )
-        else:
-            print("no user milo found")
+        #milo = User.query.filter_by(first_name="Milo").first()
+        #if milo != None:
+        #    print(
+        #        [team.name for team in milo.teams]
+        #    )
+        #else:
+        #    print("no user milo found")
 
         # get all the teams that 
-        hannah = User.query.filter_by(first_name="Hannah").first()
-        if hannah != None:
-            print(
-                [team.name for team in hannah.teams]
-            )
-        else:
-            print("no user hannah found")
+        #hannah = User.query.filter_by(first_name="Hannah").first()
+        #if hannah != None:
+        #    print(
+        #        [team.name for team in hannah.teams]
+        #    )
+        #else:
+        #    print("no user hannah found")
 
 
 
