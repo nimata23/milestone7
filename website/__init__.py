@@ -25,7 +25,7 @@ def create_app():
     db.init_app(app)
 
     from .models import User, Hawkins
-    create_database(app)
+    #create_database(app)
 
     from .views import views
     from .auth import auth
