@@ -48,6 +48,7 @@ pytest==7.2.0
 python-dateutil==2.8.2
 python-dotenv==0.21.0
 pytz==2022.5
+pywin32==305
 pyzmq==24.0.1
 six==1.16.0
 SQLAlchemy==1.4.42
@@ -57,5 +58,6 @@ tomli==2.0.1
 tornado==6.2
 traitlets==5.5.0
 wcwidth==0.2.5
+website==1.1
 Werkzeug==2.2.2
 zipp==3.9.0

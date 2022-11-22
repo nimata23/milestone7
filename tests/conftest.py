@@ -1,9 +1,9 @@
 import pytest
-from website import create_app, drop_database
+from website.__init__ import create_test_app, drop_database
 
 @pytest.fixture()
 def app():
-    app = create_app()
+    app = create_test_app()
     app.config.update({
         "TESTING": True,
     })
