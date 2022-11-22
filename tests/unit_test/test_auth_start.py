@@ -7,12 +7,14 @@ def new_user():
     return user
 
 def test_role():
+    user = new_user()
     role = user.role 
     assert role == "athlete"
     assert role != "coach"
     assert role != "admin"
 
 def test_email():
+    user = new_user()
     email = user.email
     assert email == "hannah@colby.edu"
     assert email != "hanah@colby.edu"

@@ -1,5 +1,5 @@
 import pytest
-from website.__init__ import create_test_app, drop_database
+from website import create_test_app, drop_database
 
 @pytest.fixture()
 def app():
