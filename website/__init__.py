@@ -5,16 +5,16 @@ import os
 from os import path
 from flask_login import LoginManager
 from dotenv import load_dotenv
-
 from werkzeug.security import generate_password_hash
 
+load_dotenv()
 db = SQLAlchemy()
 DB_NAME = "database.db"
 # the location of the csv upload folder
 UPLOAD_FOLDER = "./csvs"
-load_dotenv()
 
-def create_app() -> Flask:
+
+def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("postgres", "postgresql", 1)
@@ -24,6 +24,9 @@ def create_app() -> Flask:
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     db.init_app(app)
 
+    from .models import User, Hawkins
+    create_database(app)
+
     from .views import views
     from .auth import auth
     # from .auth import auth
@@ -32,8 +35,6 @@ def create_app() -> Flask:
     app.register_blueprint(auth, url_prefix='/')
     # app.register_blueprint(auth, url_prefix='/')
 
-    from .models import User, Hawkins
-    #create_database(app)
 
     #with app.app_context():
         # test the database here
@@ -93,13 +94,13 @@ def create_app() -> Flask:
 
 
 def create_database(app: Flask):
-    if not path.exists('instance/' + DB_NAME):
-        print('Created Database!')
+    #if not path.exists('instance/' + DB_NAME):  
 
-        # use app context in order to initialize properly
-        with app.app_context():
-            db.create_all()
-            populate()
+    # use app context in order to initialize properly
+    with app.app_context():
+        db.create_all()
+        populate()
+    print('Created Database!')
             
 
 def populate():
