@@ -1,7 +1,7 @@
 from urllib import request
 
 from flask import Flask, Blueprint, render_template, request, flash, redirect, url_for, current_app, redirect
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, login_user
 
 from . import db
 from .models import User, Hawkins, parse_csv
