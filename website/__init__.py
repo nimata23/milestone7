@@ -5,14 +5,13 @@ import os
 from os import path
 from flask_login import LoginManager
 from dotenv import load_dotenv
-
 from werkzeug.security import generate_password_hash
 
+load_dotenv()
 db = SQLAlchemy()
 DB_NAME = "database.db"
 # the location of the csv upload folder
 UPLOAD_FOLDER = "./csvs"
-load_dotenv()
 
 def create_test_app():
     app = Flask(__name__)
@@ -38,8 +37,6 @@ def create_test_app():
 
     return app
 
-
-
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
@@ -51,7 +48,9 @@ def create_app():
     db.init_app(app)
 
     from .models import User, Hawkins
+
     create_database(app)
+
 
     from .views import views
     from .auth import auth
@@ -60,6 +59,7 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     # app.register_blueprint(auth, url_prefix='/')
+
 
 
 
