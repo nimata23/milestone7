@@ -58,6 +58,7 @@ def permissions():
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
         password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
         role = request.form.get('roles')
 
         emailList = email.split('@')

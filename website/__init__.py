@@ -13,6 +13,29 @@ DB_NAME = "database.db"
 # the location of the csv upload folder
 UPLOAD_FOLDER = "./csvs"
 
+def create_test_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'secret'
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///test.db"
+    db.init_app(app)
+
+    from .models import User
+    create_database(app)
+
+    from .views import views
+    from .auth import auth
+    app.register_blueprint(views, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')
+
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
+
+    return app
 
 def create_app():
     app = Flask(__name__)
@@ -25,7 +48,9 @@ def create_app():
     db.init_app(app)
 
     from .models import User, Hawkins
-    #create_database(app)
+
+    create_database(app)
+
 
     from .views import views
     from .auth import auth
@@ -34,50 +59,6 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     # app.register_blueprint(auth, url_prefix='/')
-
-
-    #with app.app_context():
-        # test the database here
-        #from .models import Team, User
-
-        # get all the users associated with the swim team
-        
-        #mens_swim = Team.query.filter_by(name="mens_swim").first()
-        #if mens_swim != None:
-        #    print(
-        #        [user.first_name for user in mens_swim.users]
-        #    )
-
-        # get all the athletes associated with the swim team
-        
-        #    print(
-        #        [user.first_name for user in mens_swim.users if user.role == "athlete"]
-        #    )
-
-        # get all the coaches
-        #    print(
-        #        [user.first_name for user in mens_swim.users if user.role == "coach"]
-        #    )
-        #else:
-        #    print("no user team nated 'mens_swim' found")
-
-        # get all the teams that Milo is on
-        #milo = User.query.filter_by(first_name="Milo").first()
-        #if milo != None:
-        #    print(
-        #        [team.name for team in milo.teams]
-        #    )
-        #else:
-        #    print("no user milo found")
-
-        # get all the teams that 
-        #hannah = User.query.filter_by(first_name="Hannah").first()
-        #if hannah != None:
-        #    print(
-        #        [team.name for team in hannah.teams]
-        #    )
-        #else:
-        #    print("no user hannah found")
 
 
 
@@ -94,7 +75,8 @@ def create_app():
 
 
 def create_database(app: Flask):
-    #if not path.exists('instance/' + DB_NAME):  
+    #if not path.exists('instance/' + DB_NAME):
+        
 
     # use app context in order to initialize properly
     with app.app_context():
@@ -169,3 +151,9 @@ def populate():
 
     db.session.add_all([matt, milo, hannah, nicole, swim, tennis, anne])
     db.session.commit()
+
+def drop_database(app):
+    with app.app_context():
+        db.session.remove()
+        db.drop_all()
+    print('Dropped Database!')
