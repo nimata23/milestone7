@@ -49,7 +49,7 @@ def create_app():
 
     from .models import User, Hawkins
 
-    create_database(app)
+    #create_database(app)
 
 
     from .views import views
@@ -81,9 +81,9 @@ def create_database(app: Flask):
     # use app context in order to initialize properly
     with app.app_context():
         db.create_all()
-        populate()
+        #populate()
     print('Created Database!')
-            
+
 
 def populate():
 # with app.app_context():
