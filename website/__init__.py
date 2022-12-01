@@ -21,6 +21,7 @@ def create_test_app():
 
     from .models import User
     create_database(app)
+    populate(app)
 
     from .views import views
     from .auth import auth
@@ -49,7 +50,7 @@ def create_app():
 
     from .models import User, Hawkins
 
-    create_database(app)
+    #create_database(app)
 
 
     from .views import views
@@ -81,76 +82,76 @@ def create_database(app: Flask):
     # use app context in order to initialize properly
     with app.app_context():
         db.create_all()
-        populate()
+        #populate()
     print('Created Database!')
-            
 
-def populate():
-# with app.app_context():
+
+def populate(app):
+    with app.app_context():
     # Users
 
-    from .models import User, Team
+        from .models import User, Team
 
-    matt = User(
-        email = "matt@colby.edu",
-        first_name = "Matt",
-        last_name = "Cerrato",
-        password = generate_password_hash("1234567890", method='sha256'),
-        role = "athlete"
-    )
+        matt = User(
+            email = "matt@colby.edu",
+            first_name = "Matt",
+            last_name = "Cerrato",
+            password = generate_password_hash("1234567890", method='sha256'),
+            role = "athlete"
+        )
 
-    milo = User(
-        email = "milo@colby.edu",
-        first_name = "Milo",
-        last_name = "Lani-Caputo",
-        password = generate_password_hash("1234567890", method='sha256'),
-        role = "athlete"
-    )
+        milo = User(
+            email = "milo@colby.edu",
+            first_name = "Milo",
+            last_name = "Lani-Caputo",
+            password = generate_password_hash("1234567890", method='sha256'),
+            role = "athlete"
+        )
 
-    hannah = User(
-        email = "hannah@colby.edu",
-        first_name = "Hannah",
-        last_name = "Soria",
-        password = generate_password_hash("1234567890", method='sha256'),
-        role = "coach"
-    )
+        hannah = User(
+            email = "hannah@colby.edu",
+            first_name = "Hannah",
+            last_name = "Soria",
+            password = generate_password_hash("1234567890", method='sha256'),
+            role = "coach"
+        )
 
-    nicole = User(
-        email = "nicole@colby.edu",
-        first_name = "Nicole",
-        last_name = "Matamoros",
-        password = generate_password_hash("1234567890", method='sha256'),
-        role = "coach"
-    )
+        nicole = User(
+            email = "nicole@colby.edu",
+            first_name = "Nicole",
+            last_name = "Matamoros",
+            password = generate_password_hash("1234567890", method='sha256'),
+            role = "coach"
+        )
 
-    anne = User(
-        email = "anne@colby.edu",
-        first_name = "Anne",
-        last_name = "Doctor",
-        password = generate_password_hash("1234567890", method='sha256'),
-        role = "admin"
-    )
+        anne = User(
+            email = "anne@colby.edu",
+            first_name = "Anne",
+            last_name = "Doctor",
+            password = generate_password_hash("1234567890", method='sha256'),
+            role = "admin"
+        )
 
-    # Teams
-    swim = Team(
-        name = "Men's swim"
-    )
-    swim.users += [matt, milo, hannah, nicole]
+        # Teams
+        swim = Team(
+            name = "Men's swim"
+        )
+        swim.users += [matt, milo, hannah, nicole]
 
-    tennis = Team(
-        name = "Womens Tennis"
-    )
-    tennis.users += [matt, milo, hannah, nicole]
+        tennis = Team(
+            name = "Womens Tennis"
+        )
+        tennis.users += [matt, milo, hannah, nicole]
 
 
-    # Sleep
-    # Readiness
-    # hawkins
-    # nutrition
-    # Note
+        # Sleep
+        # Readiness
+        # hawkins
+        # nutrition
+        # Note
 
-    db.session.add_all([matt, milo, hannah, nicole, swim, tennis, anne])
-    db.session.commit()
+        db.session.add_all([matt, milo, hannah, nicole, swim, tennis, anne])
+        db.session.commit()
 
 def drop_database(app):
     with app.app_context():
