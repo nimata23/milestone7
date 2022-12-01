@@ -37,12 +37,15 @@ def test_create_team():
         print(player)
     print("Player in team should be: hannah")
 
+    #verify backref between user and team
+    print("user hannah is on team: " + hannah.teams[0].name )
 
     #test if team object can be created, test data is stored correctly
     assert hannah != None
     assert team != None
     assert team.name == "Men's Swim"
     assert team.users[0].first_name == "hannah"
+    assert hannah.teams[0].name == "Men's Swim"
 
 def test_create_Note():
     #create user
