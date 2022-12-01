@@ -1,27 +1,24 @@
 import pytest
 from website.models import User
-from website import db
-#from werkzeug.security import generate_password_hash
+#from website import db, create_test_app
+from werkzeug.security import check_password_hash
 
-def test_create_user():
-    #create user
-    user = User(email = "hannah25@colby.edu", first_name = "hannah",
-    last_name = "soria", password = "1234567", role = "athlete")
+def test_success_login_coach(client):
+    response = client.get('/login')
+    assert response.status_code == 200
+    assert b'email' in response.data
+    assert b'password' in response.data
 
-    #verify user information
-    print("Email: " + user.email +" == hannah25@colby.edu")
-    print("First name: "+ user.first_name + " == hannah")
-    print("Last name: " + user.last_name + " == soria")
-    print("Password: "+ user.password +" == 1234567")
-    print("Role: " + user.role + " == athlete")
+    with client:
+        response = client.post("/login", data={"email": "hannah@colby.edu",
+            "password": "1234567890"})
+        assert response.status_code == 302
+        assert b'Redirecting' in response.data
 
-    #test if user object can be created, test data is stored correctly
-    assert user != None
-    assert user.email == "hannah25@colby.edu"
-    assert user.first_name == "hannah"
-    assert user.last_name =="soria"
-    assert user.password == "1234567"
-    assert user.role == "athlete"
+        response = client.get('/teamView/<team_name>', follow_redirects=True)
+        assert response.status_code == 200
+        assert b"Home" in response.data
+    
 
 
     

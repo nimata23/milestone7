@@ -133,12 +133,12 @@ def populate():
 
     # Teams
     swim = Team(
-        name = "mens_swim"
+        name = "Men's swim"
     )
     swim.users += [matt, milo, hannah, nicole]
 
     tennis = Team(
-        name = "womens_tennis"
+        name = "Womens Tennis"
     )
     tennis.users += [matt, milo, hannah, nicole]
 
