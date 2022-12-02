@@ -196,7 +196,11 @@ def teamView(team_name):
 
 @views.route("/athleteView/<first_name><last_name>", methods=['GET','POST'])
 def athleteView(first_name, last_name):
-   # name = athlete_name[0] + athlete_name[1] 
+   # name = athlete_name[0] + athlete_name[1]
+    if request.method == "POST": 
+        return flask.redirect(authorization_url)
+
+
     dfR = pd.read_csv('website/data/readiness.csv')
     readinessAvg = dfR["Score"].mean().astype(int)
 

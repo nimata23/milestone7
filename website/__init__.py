@@ -7,6 +7,7 @@ from flask_login import LoginManager
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash
 
+
 load_dotenv()
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -18,6 +19,7 @@ def create_test_app():
     app.config['SECRET_KEY'] = 'secret'
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///test.db"
     db.init_app(app)
+    app.secret_key = os.getenv('secret_key')
 
     from .models import User
     create_database(app)
@@ -41,8 +43,8 @@ def create_test_app():
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("postgres", "postgresql", 1)
-    
+    #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("postgres", "postgresql", 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///test.db"
     
     # configure an upload folder for csv uploads
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -50,8 +52,8 @@ def create_app():
 
     from .models import User, Hawkins
 
-    #create_database(app)
-
+    create_database(app)
+    #populate(app)
 
     from .views import views
     from .auth import auth

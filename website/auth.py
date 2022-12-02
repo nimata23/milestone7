@@ -3,6 +3,8 @@ from .models import User, Hawkins
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
 
 auth = Blueprint('auth', __name__)
 
@@ -110,3 +112,21 @@ def permissions():
 
     return render_template("permissions.html", user=current_user, user_list=user_list,chosen_user=selected_user,selected_role=selected_role)
 
+@auth.route('/api_auth', methods=['GET', 'POST'])
+@login_required
+def OAuth2():
+    #uses client_secret.json file to identify app that is requesting
+    #auth. Client ID from that file and access scopes are needed
+    flow = google_auth_oauthlib.flow.FLow.from_client_secrets_file(
+        'client_secret.json', 
+        scopes=['https://www.googleapis.com/auth/fitness.heart_rate.read',
+            'https://www.googleapis.com/auth/fitness.nutrition.read',
+            'https://www.googleapis.com/auth/fitness.sleep.read']
+    )   
+    flow.redirect_uri ='https://www.milestone7.herokuapp.com/athleteView'
+    
+
+    authorization_url, state = flow.authorization_url(
+        access_type='offline',
+        include_granted_scopes='true'
+    )
