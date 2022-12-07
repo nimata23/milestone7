@@ -17,16 +17,19 @@ def create_test_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret'
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///test.db"
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     db.init_app(app)
 
     from .models import User
     create_database(app)
-    populate(app)
+    #populate(app)
 
     from .views import views
     from .auth import auth
+    from .oauth2 import oauth2
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(oauth2, url_prefix='/')
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -42,12 +45,11 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("postgres", "postgresql", 1)
-    
-    
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     # configure an upload folder for csv uploads
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     db.init_app(app)
-
+    
     from .models import User, Hawkins
 
     #create_database(app)
