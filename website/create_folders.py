@@ -7,7 +7,7 @@ API_VERSION = 'v3'
 SCOPES = ['https://www.googleapis.com/auth/drive']
 service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
-data = ['Sleep', 'Recovery', 'Calories']
+data = ['Sleep_Backup', 'Readiness_Backup', 'Nutrition_Backup']
 
 for info in data:
     file_metadata = {
