@@ -344,9 +344,10 @@ def allowed_file(filename):
 
 
 
-@views.route("/filePicker")
+@views.route("/filePicker", methods=['GET', 'POST'])
 @login_required
 def choose_files():
+    
     return render_template('picker.html', user=current_user)
 
 @views.route("/upload", methods=["GET", "POST"])
