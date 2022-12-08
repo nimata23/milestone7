@@ -22,7 +22,7 @@ def create_test_app():
 
     from .models import User
     create_database(app)
-    #populate(app)
+    populate(app)
 
     from .views import views
     from .auth import auth
