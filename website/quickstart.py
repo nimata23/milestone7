@@ -69,6 +69,7 @@ def read_sheets(dataId):
         
     except HttpError as err:
         print(err)
+        
     first_name = current_user.first_name
     last_name = current_user.last_name
     return redirect('views.athleteView',first_name = first_name,
