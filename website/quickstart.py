@@ -19,18 +19,18 @@ from googleapiclient.errors import HttpError
 quickstart = Blueprint('quickstart', __name__)
 
 
-SAMPLE_SHEETS_ID ="1BuQdt1HK9g17WOdJOSkN1n0HGtUTv9HcmOB7QDqg9Jg"
-CREDENTIALS = "credentials.json"
+#SAMPLE_SHEETS_ID ="1BuQdt1HK9g17WOdJOSkN1n0HGtUTv9HcmOB7QDqg9Jg"
+CREDENTIALS = "website/credentials.json"
 SAMPLE_RANGE_NAME = 'Sheet1!A1:K50'
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
-#@quickstart.route('/<string:dataId>', methods=['POST'])
-#@login_required
-def main():
+@quickstart.route('/<string:dataId>', methods=['POST'])
+@login_required
+def read_sheets():
     """Shows basic usage of the Sheets API.
     Prints values from a sample spreadsheet.
     """
-    #sheets_id = json.loads(dataId)
+    sheets_id = json.loads(dataId)
 
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -55,7 +55,7 @@ def main():
 
         # Call the Sheets API
         sheet = service.spreadsheets()
-        result = sheet.values().get(spreadsheetId=SAMPLE_SHEETS_ID,
+        result = sheet.values().get(spreadsheetId= sheets_id,
                                     range=SAMPLE_RANGE_NAME).execute()
         values = result.get('values', [])
 
