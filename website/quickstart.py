@@ -27,6 +27,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 @quickstart.route('/<string:dataId>', methods=['POST'])
 @login_required
 def read_sheets(dataId):
+    flash('inside read_sheets')
     """Shows basic usage of the Sheets API.
     Prints values from a sample spreadsheet.
     """
