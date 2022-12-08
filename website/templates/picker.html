@@ -10,6 +10,7 @@
 <!--Add buttons to initiate auth sequence and sign out-->
 <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
 <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+<a href= "{{url_for('views.athleteView', first_name=first_name, last_name=last_name}})>return</button>
 <pre id="content" style="white-space: pre-wrap;"></pre>
 
 <script type="text/javascript">
@@ -140,7 +141,7 @@
       const document = data[google.picker.Response.DOCUMENTS][0];
       fileId = document[google.picker.Document.ID];
       const request = new XMLHttpRequest()
-      request.open('GET','/read_sheets/{{JSON.stringify(fileId)}}');
+      request.open('GET',/{{JSON.stringify(fileId)}}');
       request.send()
 
     }
