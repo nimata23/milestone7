@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Choose Files</title>
+    </head>
+    <body>
+        <button id="picker">Choose File</button>
+    </body>
+    <script type = "test/javascript" scr="https://apis.google.com/js/api.js"></script>
+    <script>
+        var clientID = '77175823972-35k75hgf11653f6q1c7sh3n3r2ede95i.apps.googleusercontent.com'
+        var key = 'AIzaSyB2wQOozBK5ICVbgyftp8hqbXpAuWdlhz4'
+        var project_id = '77175823972'
+        var oauthToken
+        var pickerApiLoaded = false
+
+        //scope for google drive
+        var scope = "https://www.googleapis.com/auth/drive.file"
+
+        // client library of google
+        function pickerDialog(){
+	    alert('inside picker Dialog')
+            loadPicker()
+        }
+        document.getElementById("picker".addEventListener("click", pickerDialog());
+        function loadPicker(){
+            gapi.load('auth',{'callback':onAuthApiLoad})
+            gapi.load('picker',{'callback':onPickerApiLoad})
+	}
+
+        function onAuthApiLoad(){
+            window.gapi.auth.authorize({
+                'client_id':clientId,
+                'scope':scope,
+                'immediate':false,
+            },
+            handleAuthResult
+	    )
+	}
+	
+	function onPickerApiLoad(){
+	    pickerApiLoaded=true
+            createPicker()		
+	}
+
+        function handleAuthResult(){
+            //access token
+            if(authResult && !authResult.error){
+                oauthToken = authResult.access_token
+                createPicker()
+	    }
+         }
+
+         function createPicker(){
+             if(pickerApiLoaded && oauthToken){
+	         var view = new google.picker.View(google.picker.ViewId.SPREADSHEETS)
+		 var picker = new google.picker.PickerBuilder()
+		 .enablefeature(google.picker.Feature.NAV_HIDDEN)
+                 .setAppId(project_id)
+		 .setOAuthToken(oauthToken)
+                 .addView(view)
+      		 .setDeveloperKey(key)
+                 .setCallback(pickerCallback)
+                 .build()
+
+		 picker.setVisible(true)
+	     }
+          }
+        function pickerCallback(data){
+	    if(data.action == google.picker.Action.PICKED){
+                var field = data.docs[0].id
+                alert("The user had selected" + field)
+		window.location.replace( {{"url_for('oauth2.read_files', data.docs[0].id)"}})
+	    }
+	}
+
+    </script>
+</html>

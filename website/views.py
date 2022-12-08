@@ -342,6 +342,13 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in {"csv"}
 
+
+
+@views.route("/filePicker")
+@login_required
+def choose_files():
+    return render_template('picker.html', user=current_user)
+
 @views.route("/upload", methods=["GET", "POST"])
 def upload():
     if request.method == 'POST':
