@@ -64,7 +64,7 @@ def read_sheets(dataId):
             return
 
         else:
-            print(values)
+            flash("data recieved")
         
     except HttpError as err:
         print(err)
