@@ -143,7 +143,7 @@
       const request = new XMLHttpRequest()
       request.open('POST', '/read_sheets/${JSON.stringify(fileId)}')
       request.onload = () => {
-         const flaskMeddage = request.responseText
+         const flaskMessage = request.responseText
          console.log(flaskMessage)
 	}
       request.send()
