@@ -142,10 +142,6 @@
       const fileId = document[google.picker.Document.ID];
       const request = new XMLHttpRequest()
       request.open('POST', '/read_sheets/${JSON.stringify(fileId)}')
-      request.onload = () => {
-         const flaskMessage = request.responseText
-         console.log(flaskMessage)
-	}
       request.send()
 
     }
