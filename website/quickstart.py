@@ -73,5 +73,3 @@ def read_sheets():
     return redirect('views.athleteView',first_name = first_name,
         last_name = last_name)
 
-if __name__ == "__main__":
-    main()
