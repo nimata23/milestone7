@@ -26,10 +26,10 @@ def create_test_app():
 
     from .views import views
     from .auth import auth
-    from .oauth2 import oauth2
+    from .quickstart import quickstart
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
-    app.register_blueprint(oauth2, url_prefix='/')
+    app.register_blueprint(quickstart, url_prefix='/')
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
