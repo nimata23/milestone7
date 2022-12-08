@@ -21,12 +21,14 @@ def create_test_app():
 
     from .models import User
     create_database(app)
-    populate(app)
+    #populate(app)
 
     from .views import views
     from .auth import auth
+    from .create_files import create_files
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(create_files, url_prefix='/')
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
