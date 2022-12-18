@@ -52,7 +52,7 @@ def create_app():
     
     from .models import User, Hawkins
 
-    #create_database(app)
+    create_database(app)
 
 
     from .views import views
