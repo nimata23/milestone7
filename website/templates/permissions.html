@@ -14,6 +14,13 @@
               </div>
               <div class="col-5 col-sm-7 col-xl-8 p-0 text-center">
                 <h2 class="mb-1 mb-sm-0">Admin Permissions Page</h2>
+		 {% with msg=get_flashed_messages()%}
+                   {% if msg %}
+                     {% for m in msg %}
+                      <h4>{{ m }}</h4>
+                     {% endfor %}
+                   {% endif %}
+                 {% endwith %}
               </div>
             </div>
           </div>
@@ -28,9 +35,6 @@
             <div class="card-body py-0 px-0 px-sm-3">
               <div class="row align-items-center">
                 <div class="col-4 col-sm-3 col-xl-2">
-                </div>
-                <div class="col-5 col-sm-7 col-xl-8 p-0 text-center">
-                  <h1 class="mb-1 mb-sm-0">User Name</h1>
                 </div>
               </div>
             
@@ -49,10 +53,9 @@
             <div class="form-group">
               <label>Select which group to choose from</label>
               <select class="js-example-basic-single" style="width:100%">
-                <option value="All" >All</option>
-                <option value="Athletes">Athletes</option>
-                <option value="Coaches">Coaches</option>
-                <option value="Peak Members">Peak Members</option>
+                <option value="all" >All</option>
+                <option value="athlete">Athletes</option>
+                <option value="coach">Coaches</option>
                 <option value="Men's Ski">Men's Ski Team</option>
                 <option value="Women's Ski">Women's Ski Team</option>
               </select>
@@ -69,7 +72,7 @@
           <div class="card-body">
             <h4 class="card-title">Choose User:</h4>
             <div class="form-group">
-              <form method="post" action="{{url_for('views.permissions')}}">
+              <form method="post" action="{{url_for('auth.permissions')}}">
               <select name="users" class="js-example-basic-single" style="width:100%" size = "5">
                 <option ></option>
                 {% for user in user_list %}
@@ -89,12 +92,9 @@
             <h4 class="card-title">Change Role:</h4>
             <div class="form-group">
               <select class="js-example-basic-single" style="width:100%">
-                <option >Athlete</option>
-                <option >Coach</option>
-                <option >Peak Team</option>
-                <option >Psychologist</option>
-                <option >Atheltic Trainer</option>
-                <option >Admin</option>
+                <option value="athlete">Athlete</option>
+                <option value="coach">Coach</option>
+                <option value="admin">Admin</option>
               </select>
               <h4></h4>
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
@@ -103,31 +103,31 @@
             
 
             <h4 class="card-title">Change Permissions:</h4>
-            <form method="POST" action="{{url_for('views.permissions')}}">
+            <form method="POST" action="{{url_for('auth.permissions')}}">
               <div class="row">
 
                 <div class="col-md-10">
                   <div class="form-group">
-                    <form method="POST" action="{{url_for('views.permissions')}}">
+                    <form method="POST" action="{{url_for('auth.permissions')}}">
                       <select name="select_role" class="js-example-basic-single" style="width:100%" >
-                        <option value="Athlete" >Athlete</option>
-                        <option value="Team" >Team</option>
-                        <option value="Admin" >Admin</option>
+                        <option value="athlete" >Athlete</option>
+                        <option value="coach" >Team</option>
+                        <option value="admin" >Admin</option>
                       </select>
                       <p></p>
                       <button type="submit" class="btn btn-primary mr-2">Select Role</button>
                     </form> 
                     <p></p>
 
-                    {% if selected_role=='Athlete' or selected_role=='Team' %}
+                    {% if selected_role=='athlete' or selected_role=='coach' %}
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
                           <div class="form-check">
                             <label class="form-check-label">
-                              {% if selected_role == 'Athlete' %}
+                              {% if selected_role == 'athlete' %}
                                 <input type="checkbox" class="form-check-input"> View Athlete </label>
-                              {% elif selected_role == "Team" %}
+                              {% elif selected_role == "coach" %}
                                 <input type="checkbox" class="form-check-input"> View Team </label>
                               {% endif %}
                           </div>
@@ -148,9 +148,9 @@
                         <div class="form-group row">
                           <div class="form-check">
                             <label class="form-check-label">
-                              {% if selected_role == "Athlete" %}
+                              {% if selected_role == "athlete" %}
                                 <input type="checkbox" class="form-check-input"> Add Athlete </label>
-                              {% elif selected_role == "Team" %}
+                              {% elif selected_role == "coach" %}
                                 <input type="checkbox" class="form-check-input"> Add Team </label>
                               {% endif %}
                           </div>
@@ -173,9 +173,9 @@
                         <div class="form-group row">
                           <div class="form-check">
                             <label class="form-check-label">
-                              {% if selected_role == "Athlete" %}
+                              {% if selected_role == "athlete" %}
                                 <input type="checkbox" class="form-check-input"> Modify Athlete </label>
-                              {% elif selected_role == "Team" %}
+                              {% elif selected_role == "coach" %}
                                 <input type="checkbox" class="form-check-input"> Modify Team </label>
                               {% endif %}
                           </div>
@@ -248,14 +248,14 @@
 
     </div>
 
-    <form method="POST", action="{{url_for('auth.permissions')}}">
+    <form method="POST">
     
     <div class="row">
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Add New User</h4>
-            <form method="POST" action="{{url_for('auth.permissions')}}">
+            <form method="POST">
               <div class="form-group">
                 <label for="exampleInputName1">First Name</label>
                 <input name="first_name" type="text" class="form-control" id="exampleInputName1" placeholder="First Name">
@@ -272,13 +272,17 @@
                 <label for="exampleInputPassword4">Password</label>
                 <input name="password" type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
               </div>
+	      <div class="form-group">
+                <label for="exampleInputPassword4">Confirm Password</label>
+                <input name="confirm_password" type="password" class="form-control" id="exampleInputPassword4" placeholder="Confirm Password">
+              </div>
               <div class="form-group">
                 <label>Role</label>
                 <div class="form-group">
                   <select name="roles" class="js-example-basic-single" >
-                    <option value="Athlete" name="Athlete_role" >Athlete</option>
-                    <option value="Coach" name="Coach_role" >Coach</option>
-                    <option value="Admin" name="Admin_role" >Admin</option>
+                    <option value="athlete" name="Athlete_role" >Athlete</option>
+                    <option value="coach" name="Coach_role" >Coach</option>
+                    <option value="admin" name="Admin_role" >Admin</option>
                   </select>
                 </div> 
               </div>
@@ -286,9 +290,10 @@
               
               <div class="form-group">
                 <label>Teams: </label>
-                <select class="js-example-basic-multiple" multiple="multiple" style="width:100%">
-                  <option value="Men's Ski">Men's Ski Team</option>
-                  <option value="Women's Ski">Women's Ski Team</option>
+                <select name="teams" class="js-example-basic-multiple" multiple="multiple" style="width:100%">
+                  {% for team in team_list %}
+                    <option value="{{team.id}}"> {{team.name}}</option>
+                  {% endfor %}
                 </select>
               </div>
                 

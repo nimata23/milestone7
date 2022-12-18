@@ -4,7 +4,7 @@ from flask import Flask, Blueprint, render_template, request, flash, redirect, u
 from flask_login import login_required, current_user, login_user
 
 from . import db
-from .models import User, Hawkins, parse_csv
+from .models import User, Team
 from werkzeug.utils import secure_filename
 import os
 
@@ -272,118 +272,13 @@ def athleteView(first_name, last_name):
  
  
 
-@views.route("/permissions", methods=['GET', 'POST'])
-def permissions():
-
-    try:
-        list = User.query.all()
-        
-        user_list = list
-        print(len(user_list))
-    except:
-        user_list = []
-    id = request.form.get('users')
-    if id:
-        selected_user = User.query.filter_by(id=id).first()
-    else:
-        selected_user = current_user
-    
-    selected_role = "Athlete"
-
-    if request.method == "POST":
-        selected_role = request.form.get("select_role")
-        email = request.form.get('email')
-        first_name = request.form.get('first_name')
-        last_name= request.form.get('last_name')
-        password = request.form.get('password')
-        role = request.form.get('roles')
-        
-        try:
-            emailList = email.split('@')
-        except:
-            emailList = ["no","no"]
-            
-        
-        try:
-            user = User.query.filter_by(email=email).first()
-        except:
-            user = False
-        if user:
-            flash('Email already exists.', category='error')
-        elif emailList[1] != 'colby.edu':
-            flash('Must use colby email', category='error')
-        elif len(email) < 4:
-            flash('Email must be greater than 3 characters.', category='error')
-        elif len(password) < 7:
-            flash('Password must be at least 7 characters.', category='error')
-        else:
-            
-            # add user to database
-            new_user = User(email=email,
-                            password=generate_password_hash(password, method='sha256'),
-                            role=role, first_name=first_name, last_name=last_name)
-
-            db.session.add(new_user)
-            db.session.commit()
-
-            login_user(new_user, remember=True)
-            flash('Account created!', category='success')
-    
-        
-    return render_template("permissions.html", user=current_user, user_list=user_list, selected_role=selected_role,selected_user=selected_user)
-
-
-@views.route("/athleteDetail",methods=['GET','POST'])
-def athleteDetail():
-    return render_template("athleteDetail.html")
-
-# helper function for upload()
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in {"csv"}
 
 
 
-@views.route("/filePicker", methods=['GET', 'POST'])
-@login_required
-def choose_files():
-    f_name = current_user.first_name
-    l_name= current_user.last_name
 
-    return render_template('picker.html', user=current_user, first_name=f_name, last_name=l_name)
 
-@views.route("/upload", methods=["GET", "POST"])
-def upload():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            # parse the csv file and insert it into the db
-            data_type = filename.rsplit(".")[0].lower()
-            parse_csv(data_type=data_type, filename=filename)
-            return redirect(url_for("views.upload"))
 
-    # basic, flask-provided html for uploading files
-    # TODO make an actual webpage that imlements this
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    '''
+
 
 
 
