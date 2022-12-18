@@ -72,7 +72,7 @@
           <div class="card-body">
             <h4 class="card-title">Choose User:</h4>
             <div class="form-group">
-              <form method="post" action="{{url_for('auth.permissions')}}">
+              <form method="post">
               <select name="users" class="js-example-basic-single" style="width:100%" size = "5">
                 <option ></option>
                 {% for user in user_list %}
@@ -103,12 +103,12 @@
             
 
             <h4 class="card-title">Change Permissions:</h4>
-            <form method="POST" action="{{url_for('auth.permissions')}}">
+            <form method="POST">
               <div class="row">
 
                 <div class="col-md-10">
                   <div class="form-group">
-                    <form method="POST" action="{{url_for('auth.permissions')}}">
+                    <form method="POST">
                       <select name="select_role" class="js-example-basic-single" style="width:100%" >
                         <option value="athlete" >Athlete</option>
                         <option value="coach" >Team</option>
@@ -300,15 +300,43 @@
               
               
               <h1></h1>
-              <button type="submit" class="btn btn-primary mr-2">Submit</button>
+              <button name="new_user" type="submit" value="true" class="btn btn-primary mr-2">Submit</button>
               <button class="btn btn-dark">Cancel</button>
-            </form>
-          </div>
+             
+	      
         </div>
       </div>
       </div>
     </form>
-
+    <div class="row">
+      <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+           <h4 class="card-title">Delete User</h4>
+	    <h6> Choose User to be deleted. This action cannot be undone.</h6>
+                <div class="form-group">
+                  <form method = "POST">
+                   <select name="delete_options" class="js-example-basic-single" style="width:100%" size = "5">
+                    <option ></option>
+                    {% for user in user_list %}
+                     <option value="{{user.id}}"> {{user.last_name}}, {{user.first_name}}</option>
+                    {% endfor %}
+                   </select>
+                </div> 
+                  <button name="delete_user" id="delete_user" type="submit"  class="btn btn-primary mr-2" onclick="changeValue(delete_user);">Delete User</button>
+                </form>
+              </div>
+             </div>
+	<script type="text/javascript">
+	  function changeValue(button) {
+ 	    let text = "Are you sure you want to delete this User? This action cannot be undone\nEither OK or Cancel.";
+            if (confirm(text) == true) {
+    		button.value = 'true';
+  	    } else {
+                button.value = 'false';
+            }
+            }
+         </script>
     </div>
 
     

@@ -11,8 +11,6 @@ auth = Blueprint('auth', __name__)
 def login():
 
     if request.method == 'POST':
-        
-
         email = request.form.get('email')
         password = request.form.get('password')
         try:
@@ -67,31 +65,43 @@ def permissions():
     if not selected_role:
         selected_role = 'athlete'
 
+
     if request.method == 'POST':
+        add_user = request.form.get('new_user')
+        delete_user = request.form.get('delete_user')
+
+        if add_user == 'true':
+            email = request.form.get('email')
+            first_name = request.form.get('first_name')
+            last_name = request.form.get('last_name')
+            password = request.form.get('password')
+            confirm_password = request.form.get('confirm_password')
+            role = request.form.get('roles')
+            teams = request.form.get('teams')
+            emailList = email.split('@')
+
+            user = User.query.filter_by(email=email).first()
+
+            fields_valid = validate_fields(first_name, last_name, user)
+            email_valid = validate_email(email, emailList)
+            password_valid = validate_password(password, confirm_password)
+            if role == 'athlete' or 'coach':
+                teams_valid = validate_team(teams)
+            else:
+                teams_valid == True
         
-        email = request.form.get('email')
-        first_name = request.form.get('first_name')
-        last_name = request.form.get('last_name')
-        password = request.form.get('password')
-        confirm_password = request.form.get('confirm_password')
-        role = request.form.get('roles')
-        teams = request.form.get('teams')
-
-        emailList = email.split('@')
-
-
-        user = User.query.filter_by(email=email).first()
-
-        fields_valid = validate_fields(first_name, last_name, user)
-        email_valid = validate_email(email, emailList)
-        password_valid = validate_password(password, confirm_password)
-        if role == 'athlete' or 'coach':
-            teams_valid = validate_team(teams)
-        else:
-            teams_valid == True
+            if fields_valid and email_valid and password_valid and teams_valid:
+                create_user(email, password, role, first_name, last_name, teams)
         
-        if fields_valid and email_valid and password_valid and teams_valid:
-            create_user(email, password, role, first_name, last_name, teams)
+        if delete_user == 'true':
+            user_id = request.form.get('delete_options')
+            deleted_user = User.query.filter_by(id=user_id).first()
+            if(deleted_user):
+                db.session.delete(deleted_user)
+                db.session.commit()
+                flash('User has been deleted')
+            else:
+                flash('This user does not exist. Try refreshing the page to see the updated user list.')
 
     
 
