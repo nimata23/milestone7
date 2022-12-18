@@ -1,5 +1,4 @@
 import pytest
-from website.models import User
 #from website import db, create_test_app
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash

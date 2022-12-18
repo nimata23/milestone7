@@ -127,12 +127,15 @@ def validate_email(email, emailList):
 def validate_password(password, confirm_password):
     isValid = True
     regexp = re.compile('[^0-9a-zA-Z]+')
-    if len(password) < 7:
-        flash('Notice: Password must be at least 7 characters.')
-        isValid=False
+    if not password or not confirm_password:
+        isValid = False
+        flash('Notice: Password and password confirmation are required')
     elif password != confirm_password:
         flash('Notice: Passwords do not match.')
         isValid = False
+    elif len(password) < 7:
+        flash('Notice: Password must be at least 7 characters.')
+        isValid=False
     elif password.islower():
         flash('Notice: Password must include at least 1 capital letter.')
         isValid = False
