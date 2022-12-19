@@ -6,10 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Colby College Athlete Management System</title>
     <!-- plugins:css -->
-    <!-- <link rel="stylesheet" href="template/assets/vendors/mdi/css/materialdesignicons.min.css"> -->
-
-    <!-- <link rel="stylesheet" href="template//vendors/css/vendor.bundle.base.css"> -->
-    <!-- endinject -->
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="{{url_for('static', filename='css/vendors/jvectormap/jquery-jvectormap.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/vendors/flag-icon-css/css/flag-icon.min.css')}}">
@@ -18,27 +14,14 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/vendors/mdi/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='css/vendors/css/vendor.bundle.base.css')}}">
-    <!-- <link rel="stylesheet" href="template/assets/vendors/jvectormap/jquery-jvectormap.css"> -->
-    <!-- <link rel="stylesheet" href="template/assets/vendors/flag-icon-css/css/flag-icon.min.css"> -->
-    <!-- <link rel="stylesheet" href="template/assets/vendors/owl-carousel-2/owl.carousel.min.css"> -->
-    <!-- <link rel="stylesheet" href="template/assets/vendors/owl-carousel-2/owl.theme.default.min.css"> -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <!-- <link rel="stylesheet" href="template/assets/css/style.css"> -->
-    <!-- End layout styles -->
-
-    
     <link rel="shortcut icon" href="template/assets/images/logo.svg" />
   </head>
   <body>
     <div class="container-scroller">
-      
       <div class="container-fluid page-body-wrapper">
-
       
         <!-- partial:partials/_navbar.html -->
+        <!-- drop down menu nav bar  -->
         <nav class="navbar p-0 fixed-top d-flex flex-row">
           <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
             <a class="navbar-brand brand-logo-mini" href="index.html"><img src="template/assets/images/logo-mini.svg" alt="logo" /></a>
@@ -49,7 +32,6 @@
             </a>
             <ul class="navbar-nav w-100">
               <li class="nav-item w-100">
-                <!-- <a href="{{url_for('views.dashboard')}}" class="mdi mdi-arrow-left-circle ml-4">Back</a> -->
               </li>
             </ul>
             <ul class="navbar-nav navbar-nav-right">
@@ -78,8 +60,7 @@
         </nav>
         <!-- partial -->
 
-
-        
+        <!-- main title -->
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="row">
@@ -98,6 +79,7 @@
               </div>
             </div>
 
+            <!-- athlete sleep -->
             <div class="content-wrapper">
               <div class="row">
                 <div class="col-12 grid-margin stretch-card">
@@ -113,8 +95,7 @@
                 </div>
               </div>
               
-              
-              
+            <!-- athlete detail on sleep -->
             </div>
             <div class="row">
               <div class="col-lg-3 grid-margin stretch-card">
@@ -141,24 +122,19 @@
                   </div>
                 </div>
               </div>
-
               <div class="col-lg-5">
                 <div class="col-12 grid-margin stretch card">
                     <div class="card">
                       <div class="card-body">
                         <h4 class="card-title">Sleep Trend</h4>
                         <canvas id="lineChart" style="height:170px"></canvas>
-                        
                       </div>
                     </div>
                   </div>
                </div>
-
-              
             </div>
           </div>
           <!-- content-wrapper ends -->
-          
         </div>
         <!-- main-panel ends -->
       </div>

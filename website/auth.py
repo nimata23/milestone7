@@ -1,3 +1,4 @@
+# imports
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User, Hawkins
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,13 +7,13 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 auth = Blueprint('auth', __name__)
 
-
+# funcion creates auth route for login
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
 
     if request.method == 'POST':
         
-
+        # gets email and password
         email = request.form.get('email')
         password = request.form.get('password')
         try:
@@ -20,6 +21,7 @@ def login():
         except:
             user = None
         if user:
+            # checks email and password then directs the user to the correct view based on roll
             if check_password_hash(user.password, password):
                 login_user(user, remember=True)
                 if user.role == 'athlete':
@@ -40,18 +42,17 @@ def login():
 
     return render_template('login.html')
 
-
+# auth route for logout
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
-
+# auth route for permissions
 @auth.route('/permissions', methods=['GET', 'POST'])
 def permissions():
     
-
     if request.method == 'POST':
         
         email = request.form.get('email')
@@ -63,7 +64,7 @@ def permissions():
 
         emailList = email.split('@')
 
-
+        # checks the email requirements
         user = User.query.filter_by(email=email).first()
         if email == '':
             flash('Email required')
@@ -109,4 +110,3 @@ def permissions():
     selected_role = request.form.get('select_role')
 
     return render_template("permissions.html", user=current_user, user_list=user_list,chosen_user=selected_user,selected_role=selected_role)
-

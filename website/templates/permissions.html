@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-
 {% block title %} Home {% endblock %}
 {% block content %}
         
+<!-- title -->
 <div class="main-panel">
   <div class="content-wrapper">
     <div class="row">
@@ -21,10 +21,10 @@
       </div>
     </div>
 
+    <!-- name of admin -->
     <div class="content-wrapper">
       <div class="row">
         <div class="col-12 grid-margin stretch-card">
-          
             <div class="card-body py-0 px-0 px-sm-3">
               <div class="row align-items-center">
                 <div class="col-4 col-sm-3 col-xl-2">
@@ -33,13 +33,11 @@
                   <h1 class="mb-1 mb-sm-0">User Name</h1>
                 </div>
               </div>
-            
           </div>
         </div>
       </div>
       
-      
-      
+      <!-- choose from groups -->
     </div>
     <div class="row">
       <div class="col-md-3 grid-margin stretch-card">
@@ -53,17 +51,13 @@
                 <option value="Athletes">Athletes</option>
                 <option value="Coaches">Coaches</option>
                 <option value="Peak Members">Peak Members</option>
-                <option value="Men's Ski">Men's Ski Team</option>
-                <option value="Women's Ski">Women's Ski Team</option>
               </select>
             </div>
-            
           </div>
-
-          
         </div>
       </div>
 
+      <!-- choose user in the group -->
       <div class="col-md-3 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
@@ -83,6 +77,7 @@
         </div>
       </div>
 
+      <!-- change the roles of the user -->
       <div class="col-md-6 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
@@ -98,14 +93,12 @@
               </select>
               <h4></h4>
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
-
             </div> 
             
-
+            <!-- change the permission status -->
             <h4 class="card-title">Change Permissions:</h4>
             <form method="POST" action="{{url_for('views.permissions')}}">
               <div class="row">
-
                 <div class="col-md-10">
                   <div class="form-group">
                     <form method="POST" action="{{url_for('views.permissions')}}">
@@ -119,6 +112,7 @@
                     </form> 
                     <p></p>
 
+                    <!-- view the athlete or the team -->
                     {% if selected_role=='Athlete' or selected_role=='Team' %}
                     <div class="row">
                       <div class="col-md-6">
@@ -143,6 +137,7 @@
                       </div>
                     </div>
 
+                    <!-- add and athlete or a team -->
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
@@ -166,8 +161,7 @@
                       </div>
                     </div>
 
-                   
-
+                   <!-- modify the athlete or the team -->
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
@@ -191,10 +185,8 @@
                       </div>
                     </div>
 
-                    
-
+                <!-- modifying data as a admin and addign reports -->
                     {% elif selected_role=="Admin" %}
-
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
@@ -213,7 +205,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
@@ -232,24 +223,19 @@
                         </div>
                       </div>
                     </div>
-
                     {% endif %}
-
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                   </div>
                 </div>
-
               </div>
             </form>
-            
           </div>
         </div>
       </div>
-
     </div>
 
+    <!-- adding a user -->
     <form method="POST", action="{{url_for('auth.permissions')}}">
-    
     <div class="row">
       <div class="col-12 grid-margin stretch-card">
         <div class="card">
@@ -283,7 +269,7 @@
                 </div> 
               </div>
               
-              
+              <!-- teams -->
               <div class="form-group">
                 <label>Teams: </label>
                 <select class="js-example-basic-multiple" multiple="multiple" style="width:100%">
@@ -292,8 +278,7 @@
                 </select>
               </div>
                 
-              
-              
+              <!-- submititng edits -->
               <h1></h1>
               <button type="submit" class="btn btn-primary mr-2">Submit</button>
               <button class="btn btn-dark">Cancel</button>
@@ -303,15 +288,7 @@
       </div>
       </div>
     </form>
-
     </div>
-
-    
-
-
-
   <!-- content-wrapper ends -->
-  
-</div>
-
+  </div>
 {% endblock %}

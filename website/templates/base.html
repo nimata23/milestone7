@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <!-- Required meta tags -->
+    <!-- title -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %} Colby College Athlete Management System {% endblock %}</title>
@@ -21,14 +22,13 @@
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="/static/css/style.css">
-
     <!-- End layout styles -->
 
-    
     <link rel="shortcut icon" href="/static/images/logo.svg" />
   </head>
   <body>
 
+    <!-- mule logo -->
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
@@ -37,6 +37,7 @@
       <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
         <img src="/static/images/mule1.png" alt="image" />
         
+        <!-- coach nav bar -->
         {% if user.role == 'coach' %}
         <ul class="navbar-nav w-100">
             <li class="nav-item w-100">
@@ -47,7 +48,7 @@
         </ul>
         {% endif %}
 
-        
+        <!-- drop down for coaches -->
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown">
             <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
@@ -85,7 +86,6 @@
     <!-- partial -->
 
     <div class="container-scroller">
-      
         <div class="container-fluid">
           <div class="main-panel">
             <div class="content-wrapper">

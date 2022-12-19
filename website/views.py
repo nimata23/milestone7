@@ -1,15 +1,12 @@
+# imports
 from urllib import request
-
 from flask import Flask, Blueprint, render_template, request, flash, redirect, url_for, current_app, redirect
 from flask_login import login_required, current_user, login_user
-
 from . import db
 from .models import User, Hawkins, parse_csv
 from werkzeug.utils import secure_filename
 import os
-
 import pandas as pd
-
 import json
 import plotly
 import plotly.express as px
@@ -17,24 +14,24 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from . import create_files
 from werkzeug.security import generate_password_hash
-
 import sys
 
-
+# create blueprint
 views = Blueprint('views', __name__)
 
-
+# goes to login
 @views.route("/", methods=['GET','POST'])
 def home():
     return redirect(url_for('auth.login'))
 
+# executes the save to drive but does not change html page
 @views.route("/files",methods=['GET','POST'])
 @login_required
 def files():
     create_files
     return render_template("adminView.html", user=current_user)
 
-
+# admin view
 @views.route("/adminView",methods=['GET','POST'])
 @login_required
 def adminView():
@@ -108,13 +105,11 @@ def adminView():
     fig.update_layout(font_color="white")
     fig.update_xaxes(showgrid=False, zeroline=False)
     fig.update_yaxes(showgrid=False, zeroline=False)
-
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
-
     return render_template("adminView.html", user=current_user,
     graphJSON=graphJSON, team_names=TeamNames )
 
+# path to specific team
 @views.route("/teamView/<team_name>", methods=['GET','POST'])
 @login_required
 def teamView(team_name):
@@ -126,7 +121,7 @@ def teamView(team_name):
     for i in range(len(First)):
         names += [(First[i], Last[i])]
     
-
+    # read in csv files for the team view
     dfR = pd.read_csv('website/data/readiness.csv')
     readinessAvg = dfR["Score"].mean().astype(int)
 
@@ -200,10 +195,10 @@ def teamView(team_name):
     return render_template("teamView.html",user=current_user,
                        graphJSON=graphJSON, athletes=names, TeamName =team_name)
 
-
 @views.route("/athleteView/<first_name><last_name>", methods=['GET','POST'])
 def athleteView(first_name, last_name):
-   # name = athlete_name[0] + athlete_name[1] 
+
+   # read in csv for the athlete view
     dfR = pd.read_csv('website/data/readiness.csv')
     readinessAvg = dfR["Score"].mean().astype(int)
 
@@ -277,11 +272,9 @@ def athleteView(first_name, last_name):
     return render_template("athleteView.html",user=current_user,
                             graphJSON=graphJSON, fname=first_name, lname=last_name)
  
- 
-
+# path for permissions page
 @views.route("/permissions", methods=['GET', 'POST'])
 def permissions():
-
     try:
         list = User.query.all()
         
@@ -310,7 +303,6 @@ def permissions():
         except:
             emailList = ["no","no"]
             
-        
         try:
             user = User.query.filter_by(email=email).first()
         except:
@@ -336,10 +328,9 @@ def permissions():
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
     
-        
     return render_template("permissions.html", user=current_user, user_list=user_list, selected_role=selected_role,selected_user=selected_user)
 
-
+# path for the detailed view of the athlete
 @views.route("/athleteDetail",methods=['GET','POST'])
 def athleteDetail():
     return render_template("athleteDetail.html")
@@ -349,8 +340,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in {"csv"}
 
-
-
+# path for picker
 @views.route("/filePicker", methods=['GET', 'POST'])
 @login_required
 def choose_files():
@@ -359,6 +349,7 @@ def choose_files():
 
     return render_template('picker.html', user=current_user, first_name=f_name, last_name=l_name)
 
+# path for upload
 @views.route("/upload", methods=["GET", "POST"])
 def upload():
     if request.method == 'POST':

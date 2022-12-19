@@ -1,3 +1,4 @@
+# imports
 from venv import create
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -13,6 +14,7 @@ DB_NAME = "database.db"
 # the location of the csv upload folder
 UPLOAD_FOLDER = "./csvs"
 
+# creates the app (test)
 def create_test_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret'
@@ -20,10 +22,12 @@ def create_test_app():
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     db.init_app(app)
 
+# creates the database
     from .models import User
     create_database(app)
     dummy_populate(app)
 
+# adds the register blueprints
     from .views import views
     from .auth import auth
     app.register_blueprint(views, url_prefix='/')
@@ -39,6 +43,7 @@ def create_test_app():
 
     return app
 
+# creates the app
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
@@ -48,6 +53,7 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     db.init_app(app)
     
+# creates the databases
     from .models import User, Hawkins
 
     create_database(app)
@@ -56,14 +62,9 @@ def create_app():
 
     from .views import views
     from .auth import auth
-    # from .auth import auth
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
-    # app.register_blueprint(auth, url_prefix='/')
-
-
-
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -75,25 +76,22 @@ def create_app():
 
     return app
 
-
+# function creates the database
 def create_database(app: Flask):
-    #if not path.exists('instance/' + DB_NAME):
-        
-
     # use app context in order to initialize properly
     with app.app_context():
         db.create_all()
         #populate()
     print('Created Database!')
 
-
+# function populates the database
 def dummy_populate(app):
     with app.app_context():
     # Users
-
         from .models import User, Team
         check = User.query.filter_by(email="matt@colby.edu").first()
         if not check:
+            # dummy data
             matt = User(
                 email = "matt@colby.edu",
                 first_name = "Matt",
@@ -153,16 +151,11 @@ def dummy_populate(app):
             )
             tennis.users += [matt, milo, hannah, nicole]
 
-
-            # Sleep
-            # Readiness
-            # hawkins
-            # nutrition
-            # Note
-
+            # adding users to the database
             db.session.add_all([matt, milo, hannah, nicole, swim, tennis, anne, test])
             db.session.commit()
 
+# function to be done with the databse
 def drop_database(app):
     with app.app_context():
         db.session.remove()
