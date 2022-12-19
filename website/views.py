@@ -15,6 +15,7 @@ import plotly
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from . import create_files
 from werkzeug.security import generate_password_hash
 
 import sys
@@ -26,6 +27,12 @@ views = Blueprint('views', __name__)
 @views.route("/", methods=['GET','POST'])
 def home():
     return redirect(url_for('auth.login'))
+
+@views.route("/files",methods=['GET','POST'])
+@login_required
+def files():
+    create_files
+    return render_template("adminView.html", user=current_user)
 
 
 @views.route("/adminView",methods=['GET','POST'])

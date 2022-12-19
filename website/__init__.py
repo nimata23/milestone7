@@ -26,10 +26,8 @@ def create_test_app():
 
     from .views import views
     from .auth import auth
-    from .quickstart import quickstart
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
-    app.register_blueprint(quickstart, url_prefix='/')
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -53,6 +51,7 @@ def create_app():
     from .models import User, Hawkins
 
     create_database(app)
+    dummy_populate(app)
 
 
     from .views import views

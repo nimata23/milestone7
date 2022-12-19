@@ -77,6 +77,4 @@ def make_files():
         # TODO(developer) - Handle errors from drive API.
         print(f'An error occurred: {error}')
 
-
-
 make_files()
