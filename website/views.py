@@ -1,33 +1,29 @@
+# imports
 from urllib import request
-
 from flask import Flask, Blueprint, render_template, request, flash, redirect, url_for, current_app, redirect
 from flask_login import login_required, current_user, login_user
-
 from . import db
 from .models import User, Team
 from werkzeug.utils import secure_filename
 import os
-
 import pandas as pd
-
 import json
 import plotly
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from werkzeug.security import generate_password_hash
-
 import sys
 
-
+# create blueprint
 views = Blueprint('views', __name__)
 
-
+# goes to login
 @views.route("/", methods=['GET','POST'])
 def home():
     return redirect(url_for('auth.login'))
 
-
+# admin view
 @views.route("/adminView",methods=['GET','POST'])
 @login_required
 def adminView():
@@ -101,13 +97,11 @@ def adminView():
     fig.update_layout(font_color="white")
     fig.update_xaxes(showgrid=False, zeroline=False)
     fig.update_yaxes(showgrid=False, zeroline=False)
-
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-
-
     return render_template("adminView.html", user=current_user,
     graphJSON=graphJSON, team_names=TeamNames )
 
+# path to specific team
 @views.route("/teamView/<team_name>", methods=['GET','POST'])
 @login_required
 def teamView(team_name):
@@ -119,7 +113,7 @@ def teamView(team_name):
     for i in range(len(First)):
         names += [(First[i], Last[i])]
     
-
+    # read in csv files for the team view
     dfR = pd.read_csv('website/data/readiness.csv')
     readinessAvg = dfR["Score"].mean().astype(int)
 
@@ -193,10 +187,10 @@ def teamView(team_name):
     return render_template("teamView.html",user=current_user,
                        graphJSON=graphJSON, athletes=names, TeamName =team_name)
 
-
 @views.route("/athleteView/<first_name><last_name>", methods=['GET','POST'])
 def athleteView(first_name, last_name):
-   # name = athlete_name[0] + athlete_name[1] 
+
+   # read in csv for the athlete view
     dfR = pd.read_csv('website/data/readiness.csv')
     readinessAvg = dfR["Score"].mean().astype(int)
 
