@@ -70,7 +70,17 @@ def permissions():
         add_user = request.form.get('new_user')
         delete_user = request.form.get('delete_user')
 
-        if add_user == 'true':
+        if delete_user == 'true':
+            user_id = request.form.get('delete_options')
+            deleted_user = User.query.filter_by(id=user_id).first()
+            if(deleted_user):
+                db.session.delete(deleted_user)
+                db.session.commit()
+                flash('User has been deleted')
+            else:
+                flash('This user does not exist. Try refreshing the page to see the updated user list.')
+
+        elif add_user == 'true':
             email = request.form.get('email')
             first_name = request.form.get('first_name')
             last_name = request.form.get('last_name')
@@ -89,19 +99,11 @@ def permissions():
                 teams_valid = validate_team(teams)
             else:
                 teams_valid == True
-        
+            
             if fields_valid and email_valid and password_valid and teams_valid:
                 create_user(email, password, role, first_name, last_name, teams)
         
-        if delete_user == 'true':
-            user_id = request.form.get('delete_options')
-            deleted_user = User.query.filter_by(id=user_id).first()
-            if(deleted_user):
-                db.session.delete(deleted_user)
-                db.session.commit()
-                flash('User has been deleted')
-            else:
-                flash('This user does not exist. Try refreshing the page to see the updated user list.')
+        
 
     
 
